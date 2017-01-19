@@ -3,11 +3,20 @@ var app = express()
 var bodyparser = require('body-parser')
 var path = require('path')
 var db = require('./models')
+var reviewRoutes = require('./routes/reviewRoutes')
+var restaurantRoutes = require('./routes/restaurantRoutes')
+// var restaurantRoutesTwo = require('./routes/restaurantRoutesTwo')
 
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json())
 app.use(express.static('public'))
 
+
+
+
+app.use('/api/review', reviewRoutes)
+// app.use('/api/restaurant/:id', restaurantRoutesTwo)
+app.use('/api/restaurants', restaurantRoutes)
 
 app.get('/*', function(req, res) {
   res.sendFile(path.join(__dirname, '/views/index.html'))
@@ -15,6 +24,7 @@ app.get('/*', function(req, res) {
 
 
 db.sequelize.sync().then(function() {
+  console.log('working on')
   app.listen(3000)
 })
 
